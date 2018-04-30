@@ -14,7 +14,7 @@ float random(int min, int max)
 
 int readMessage(int messageId, char *payload)
 {
-    float temperature = random(20, 30);
+    float temperature = random(35, 43);
     snprintf(payload,
              BUFFER_SIZE,
              "{ \"deviceId\": \"Raspberry Pi - C\", \"messageId\": %d, \"temperature\": %f, \"humidity\": %f }",
