@@ -21,12 +21,12 @@ int readMessage(int messageId, char *payload)
     int SP = random (50,200);
     snprintf(payload,
              BUFFER_SIZE,
-             "{ \"deviceId\": \"Raspberry Pi - C\", \"messageId\": %d, \"temperature\": %d, \"pulse\": %d, \"DP\": %d, \"SP\": %d }",
+             "{ \"deviceId\": \"Raspberry Pi - C\", \"messageId\": %d, \"temperature\": %d, \"pulse\": %d, \"DP\": %d, \"SP\": %d, \"orthopedics\": %d,\"cardiology\": %d,\"respiratory\": %d,\"Severity\": %d }",
              messageId,
              temperature,
              pulse,
 	     DP,
-	     SP);
+	     SP,random(0,2),random(0,2),random(0,2),random(0,4));
     //return (temperature > TEMPERATURE_ALERT) ? 1 : 0;
     return 0;
 }
