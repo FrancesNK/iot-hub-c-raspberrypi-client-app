@@ -6,22 +6,29 @@
 static unsigned int BMEInitMark = 0;
 
 #if SIMULATED_DATA
-float random(int min, int max)
+int random(int min, int max)
 {
-    int range = (int)(rand()) % (100 * (max - min));
-    return min + (float)range / 100;
+    // int range = (int)(rand()) % (100 * (max - min));
+    // return min + range / 100;
+    return min + (rand() % (max - min));
 }
 
 int readMessage(int messageId, char *payload)
 {
-    float temperature = random(35, 43);
+    int temperature = random(35, 43);
+    int pulse = random(30,200);
+    int DP = random (30,120);
+    int SP = random (50,200);
     snprintf(payload,
              BUFFER_SIZE,
-             "{ \"deviceId\": \"Raspberry Pi - C\", \"messageId\": %d, \"temperature\": %f, \"humidity\": %f }",
+             "{ \"deviceId\": \"Raspberry Pi - C\", \"messageId\": %d, \"temperature\": %d, \"pulse\": %d, \"DP\": %d, \"SP\": %d }",
              messageId,
              temperature,
-             random(60, 80));
-    return (temperature > TEMPERATURE_ALERT) ? 1 : 0;
+             pulse,
+	     DP,
+	     SP);
+    //return (temperature > TEMPERATURE_ALERT) ? 1 : 0;
+    return 0;
 }
 
 #else

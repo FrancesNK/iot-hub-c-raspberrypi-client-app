@@ -57,7 +57,7 @@ static void sendMessages(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle, char *buffe
     else
     {
         MAP_HANDLE properties = IoTHubMessage_Properties(messageHandle);
-        Map_Add(properties, "temperatureAlert", (temperatureAlert > 0) ? "true" : "false");
+        Map_Add(properties, "Alert", (temperatureAlert > 0) ? "true" : "false");
         LogInfo("Sending message: %s", buffer);
         if (IoTHubClient_LL_SendEventAsync(iotHubClientHandle, messageHandle, sendCallback, NULL) != IOTHUB_CLIENT_OK)
         {
