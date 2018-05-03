@@ -26,7 +26,7 @@ int readMessage(int messageId, char *payload)
              temperature,
              pulse,
 	     DP,
-	     SP,random(0,2),random(0,2),random(0,2),random(0,4));
+	     SP,random(0,2),random(0,2),random(0,2),random(0,2));
     //return (temperature > TEMPERATURE_ALERT) ? 1 : 0;
     return 0;
 }
