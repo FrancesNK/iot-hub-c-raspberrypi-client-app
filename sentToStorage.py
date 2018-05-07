@@ -3,7 +3,7 @@
 
 import sys
 #from azure.storage.table import TableService, Entity
-from azure.cosmosdb.table import TableService, Entity
+from azure.cosmosdb.table import TableService, Entity, EntityProperty, EdmType
 import urllib2
 # If you are using Python 3+, import urllib instead of urllib2
 
@@ -11,6 +11,11 @@ import json
 
 STORAGE_ACCOUNT = 'yufengsiotoutput'
 ACCOUNT_KEY = 'j4NJoY+a1i7pwY7G+RIuCQw2R0Hx7+y+JpHKULjMOVHB7+sy8hIZxvDInMypSHTbXdKwpLGDlaZKotXrlgcOzw=='
+
+severity = ''
+orthopedics = ''
+cardiology = ''
+respiratory = ''
 
 def predictResult():
     data =  {
@@ -67,20 +72,68 @@ def predictResult():
         # response = urllib.request.urlopen(req)
 
         result = response.read()
-        print(result) 
+        #print(result)
+        jo = json.loads(result)
+        
+        global severity
+        global orthopedics
+        global cardiology
+        global respiratory
+        #print('----------------------------------------------------------')
+        severity_u = jo['Results']['severity']['value']['Values']
+        orthopedics_u = jo['Results']['orthopedics']['value']['Values']
+        cardiology_u = jo['Results']['cardiology']['value']['Values']
+        respiratory_u = jo['Results']['respiratory']['value']['Values']
+        #print(ja)
+
+        
+        for line in severity_u:
+            for key in line:
+                severity = key
+        for line in orthopedics_u:
+            for key in line:
+                orthopedics = key
+        for line in cardiology_u:
+            for key in line:
+                cardiology = key
+        for line in respiratory_u:
+            for key in line:
+                respiratory = key
+
     except urllib2.HTTPError, error:
         print("The request failed with status code: " + str(error.code))
 
         # Print the headers - they include the requert ID and the timestamp, which are useful for debugging the failure
         print(error.info())
 
-        print(json.loads(error.read()))                 
-
+        jo = json.loads(error.read())
+                        
+	
 def main():
     predictResult()
     table_service = TableService(account_name = STORAGE_ACCOUNT, account_key = ACCOUNT_KEY)
-    task = {'PartitionKey': 'Emergency', 'RowKey': 'IoT-PI-Device','PatientID':'00000003','Severity':'2', 'Specialist':'cardiology,respiratory'}
-    table_service.insert_entity('Notification',task)
+    
+    global specialist
+    global severity
+    
+    specialist = ''
+
+    if orthopedics == '1':
+        specialist = specialist + ' ' + 'orthopedics'
+        if cardiology == '1':
+            specialist = specialist + ' ' + 'cardiology'
+            if respiratory == '1':
+                specialist = specialist + ' ' + 'respiratory'
+    
+    task = Entity()
+    task.PartitionKey = 'Emergency'
+    task.RowKey = 'IoT-PI-Device'
+    task.PatientID = '00000003'
+
+    task.Severity = EntityProperty(EdmType.STRING, severity)
+    task.Specialist = EntityProperty(EdmType.STRING, specialist)
+
+    table_service.insert_or_replace_entity('Notification',task)
 
 if __name__ == '__main__':
     main()
