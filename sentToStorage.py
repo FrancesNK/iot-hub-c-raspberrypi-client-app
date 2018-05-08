@@ -8,9 +8,17 @@ import urllib2
 # If you are using Python 3+, import urllib instead of urllib2
 
 import json 
+import random
 
 STORAGE_ACCOUNT = 'yufengsiotoutput'
 ACCOUNT_KEY = 'j4NJoY+a1i7pwY7G+RIuCQw2R0Hx7+y+JpHKULjMOVHB7+sy8hIZxvDInMypSHTbXdKwpLGDlaZKotXrlgcOzw=='
+
+patientID = '0000000' + str(random.randint(1,4))
+
+temperature = str(random.randint(35,42))
+pulse = str(random.randint(30,200))
+DP = str(random.randint(30,120))
+SP = str(random.randint(50,120))
 
 severity = ''
 orthopedics = ''
@@ -23,32 +31,32 @@ def predictResult():
                 "orthopedics":
                 {
                     "ColumnNames": ["temperature", "pulse", "DP", "SP"],
-                    "Values": [ [ "37", "90", "118", "60" ]]
+                    "Values": [ [ temperature, pulse, DP, SP ]]
                 },
                 "respiratory":
                 {
                     "ColumnNames": ["temperature", "pulse", "DP", "SP"],
-                    "Values": [ [ "37", "90", "118", "60" ]]
+                    "Values": [ [ temperature, pulse, DP, SP ]]
                 },
                 "cardiology":
                 {
                     "ColumnNames": ["temperature", "pulse", "DP", "SP"],
-                    "Values": [ [ "37", "90", "118", "60" ]]
+                    "Values": [ [ temperature, pulse, DP, SP ]]
                 },
                 "Sev3":
                 {
                     "ColumnNames": ["temperature", "pulse", "DP", "SP"],
-                    "Values": [ [ "37", "90", "118", "60" ]]
+                    "Values": [ [ temperature, pulse, DP, SP ]]
                 },
                 "Sev1":
                 {
                     "ColumnNames": ["temperature", "pulse", "DP", "SP"],
-                    "Values": [ [ "37", "90", "118", "60" ]]
+                    "Values": [ [ temperature, pulse, DP, SP ]]
                 },
                 "Sev2":
                 {
                     "ColumnNames": ["temperature", "pulse", "DP", "SP"],
-                    "Values": [ [ "37", "90", "118", "60" ]]
+                    "Values": [ [ temperature, pulse, DP, SP ]]
                 },        },
         "GlobalParameters": {
         }
@@ -128,7 +136,12 @@ def main():
     task = Entity()
     task.PartitionKey = 'Emergency'
     task.RowKey = 'IoT-PI-Device'
-    task.PatientID = '00000003'
+    task.PatientID = patientID
+    task.Temperature = temperature
+    task.Pulse = pulse
+    task.DP = DP
+    task.SP = SP
+    task.Status = 'open'
 
     task.Severity = EntityProperty(EdmType.STRING, severity)
     task.Specialist = EntityProperty(EdmType.STRING, specialist)
