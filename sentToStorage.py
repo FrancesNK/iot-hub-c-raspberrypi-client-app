@@ -9,10 +9,12 @@ import urllib2
 
 import json 
 import random
+import string
 
 STORAGE_ACCOUNT = 'yufengsiotoutput'
 ACCOUNT_KEY = 'j4NJoY+a1i7pwY7G+RIuCQw2R0Hx7+y+JpHKULjMOVHB7+sy8hIZxvDInMypSHTbXdKwpLGDlaZKotXrlgcOzw=='
 
+rowKey = 'IoT-PI-Device-' + ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(9))
 patientID = '0000000' + str(random.randint(1,4))
 
 temperature = str(random.randint(35,42))
@@ -135,7 +137,7 @@ def main():
     
     task = Entity()
     task.PartitionKey = 'Emergency'
-    task.RowKey = 'IoT-PI-Device'
+    task.RowKey = rowKey
     task.PatientID = patientID
     task.Temperature = temperature
     task.Pulse = pulse
