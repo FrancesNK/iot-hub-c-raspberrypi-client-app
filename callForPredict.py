@@ -150,5 +150,15 @@ def main():
 
     table_service.insert_or_replace_entity('Notification',task)
 
+    print("----------------------")
+    print("requestID:" + rowKey)
+    print("patientID:" + patientID)
+    print("Temperature:" + temperature)
+    print("Pulse:" + pulse)
+    print("DP:" + DP)
+    print("SP:" + SP)
+    print("Predict Severity:" + severity)
+    print("Specialists:" + specialist)
+    print("---------------------")
 if __name__ == '__main__':
     main()
