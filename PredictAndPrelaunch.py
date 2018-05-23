@@ -173,7 +173,7 @@ def main():
   
     	for addr, name in nearby_devices:
        	   print("  %s - %s" % (addr, name))
-           if addr == '9C:F4:8E:BC:DE:A2':
+           if addr == '68:3E:34:87:BA:F4':
                task.Status = 'closed'
 	       table_service.insert_or_merge_entity('Notification',task)
 	       print("found the doctor !")
